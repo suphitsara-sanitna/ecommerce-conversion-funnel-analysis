@@ -1,6 +1,27 @@
---03: FUNNEL BY TRAFFIC SOURCE (แยกตาม Source)
+/*
+================================================================================
+Script 03: Funnel by Traffic Source
+================================================================================
+Purpose:
+    - To compare session distribution across traffic sources
+    - To measure conversion and drop-off rates at each funnel step by source
+    - To identify which source has the highest drop-off
+    - To rank traffic sources by session-to-purchase quality
 
---3.1 แต่ละ source (organic/paid/email/social/direct/referral) มี session กี่ session และสัดส่วนเท่าไร?**
+Tables Used:
+    - events
+    - sessions
+
+SQL Functions Used:
+    - Aggregate Functions: COUNT(), ROUND()
+    - Window Functions: LAG() OVER(), ROW_NUMBER() OVER()
+    - CTEs
+    - Subqueries
+    - CASE WHEN
+================================================================================
+*/
+
+--3.1 How many sessions does each traffic source have and what is the share?
 SELECT 
    source,
    COUNT(DISTINCT session_id) as sessions,
@@ -10,7 +31,7 @@ FROM sessions
 GROUP BY source
 
 
---3.2 Conversion rate ของแต่ละ step แยกตาม source เป็นยังไง?**, 3.4 Source ไหน drop-off สูงสุดในแต่ละ step?**
+--3.2 What is the conversion rate and drop-off rate at each funnel step by traffic source?
 WITH event_session as (
 SELECT 
    session_id,
@@ -46,8 +67,7 @@ SELECT
 FROM  source_session
 
 
---3.3 Overall conversion rate (Session → Purchase) แยกตาม source ต่างกันไหม?**, 
---3.5 Source ไหนมี session-to-purchase rate ดีที่สุด? (quality traffic ranking)**
+-- 3.3 Does the overall conversion rate differ by source and which source has the best quality traffic?
 SELECT
    *,
   row_number() OVER(ORDER BY conversion_rate DESC)
