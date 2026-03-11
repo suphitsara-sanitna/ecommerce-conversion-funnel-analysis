@@ -50,8 +50,6 @@ FROM events
 GROUP BY event_type
 ORDER BY step_order
 
-
-
 --1.3 What is the overall conversion rate (Session → Purchase)?
 SELECT 
    COUNT(DISTINCT CASE WHEN event_type = 'purchase' THEN session_id END) as purchase_sessions,
@@ -59,8 +57,7 @@ SELECT
    ROUND(100.0 * COUNT(DISTINCT CASE WHEN event_type = 'purchase' THEN session_id END) / 
    (COUNT(DISTINCT session_id)), 2) as overall_conversion_rate
 FROM events
-
-
+	
 --1.4 How long does it take on average from first page view to purchase?
 WITH first_pageview as (
 SELECT
