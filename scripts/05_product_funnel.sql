@@ -1,6 +1,26 @@
---SCRIPT 05: PRODUCT-LEVEL FUNNEL (แยกตาม Product / Category)
+--/*
+================================================================================
+Script 05: Product-Level Funnel
+================================================================================
+Purpose:
+    - To identify top products by page views and add-to-cart events
+    - To measure view-to-cart rate by product
+    - To measure cart-to-purchase rate by product
+    - To compare view-to-purchase rate across product categories
 
---5.1 Top 10 สินค้าที่ถูก page_view มากที่สุด**
+Tables Used:
+    - events
+    - products
+    - order_items
+
+SQL Functions Used:
+    - Aggregate Functions: COUNT(), SUM(), ROUND()
+    - CTEs
+    - CASE WHEN
+================================================================================
+*/
+
+--5.1 What are the top 10 most viewed products?
 SELECT
    p.product_id,
    p.name,
@@ -12,7 +32,7 @@ GROUP BY p.product_id,p.name
 ORDER BY view_session DESC
 
 
---5.2 Top 10 สินค้าที่ถูก add_to_cart มากที่สุด**
+--5.2 What are the top 10 most added-to-cart products?
 SELECT
    p.product_id,
    p.name,
@@ -25,7 +45,7 @@ ORDER BY cart_session DESC
 
 
 
---5.3 View-to-Cart rate ของแต่ละสินค้าเป็นยังไง? สินค้าไหน rate ต่ำสุด?**
+--5.3 What is the view-to-cart rate by product? Which products have the lowest rate?
 SELECT 
    p.name, 
    COUNT(DISTINCT CASE WHEN e.event_type = 'page_view' THEN e.session_id END) as sessions, 
@@ -39,7 +59,7 @@ ORDER BY rate DESC
 
 
 
---5.4 Cart-to-Purchase rate ของแต่ละสินค้าเป็นยังไง? สินค้าไหนที่คนหยิบแล้วไม่ซื้อบ่อย?**
+--5.4 What is the cart-to-purchase rate by product? Which products are added to cart but rarely purchased?
 WITH cart_event as (
 SELECT
    e.product_id as product_id,
@@ -72,7 +92,7 @@ LEFT JOIN cart_event ce on ce.product_id = pe.productID
 ORDER BY cart_to_purchase_rate DESC
 
 
---5.5 Category ไหนมี overall view-to-purchase rate ต่ำสุด?**
+-- 5.5 Which product category has the lowest overall view-to-purchase rate?
 WITH view_event as (
 SELECT
    e.product_id as product_id,
