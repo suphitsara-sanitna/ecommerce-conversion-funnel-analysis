@@ -1,6 +1,28 @@
---08: FUNNEL OPPORTUNITIES & RECOMMENDATIONS (สรุปโอกาสและ Recommendations)
+--/*
+================================================================================
+Script 08: Funnel Opportunities & Recommendations
+================================================================================
+Purpose:
+    - To identify the biggest drop-off point in the funnel
+    - To find the lowest-converting device and traffic source combinations
+    - To estimate revenue recovery potential from improving checkout drop-off
+    - To estimate additional orders from reducing cart abandonment
 
---8.1 Step ไหนมี drop-off rate สูงสุดโดยรวม? (biggest leak in the funnel)**
+Tables Used:
+    - events
+    - sessions
+    - orders
+
+SQL Functions Used:
+    - Aggregate Functions: COUNT(), SUM(), ROUND()
+    - Window Functions: LAG() OVER()
+    - CTEs
+    - Subqueries
+    - CASE WHEN
+================================================================================
+*/
+
+--8.1 Which funnel step has the highest drop-off rate? (biggest leak in the funnel)
 SELECT 
    event_type,
    CASE event_type
@@ -21,8 +43,7 @@ FROM events
 GROUP BY event_type
 ORDER BY step_order
 
-
---8.2 Segment ไหน (device + source combination) ที่มี conversion rate ต่ำที่สุดทั้งที่มี session เยอะ?**
+--8.2 Which device and traffic source combination has the lowest conversion rate?
 SELECT 
    s.device,
    s.source,
@@ -36,8 +57,6 @@ FROM events e
 LEFT JOIN sessions s on s.session_id = e.session_id
 GROUP BY s.device, s.source
 ORDER BY conversion_rate 
-
-
 
 --8.3 ถ้าแก้ checkout drop-off ได้ 50% จะ recover revenue ได้เท่าไร? (revenue impact estimation)**
 SELECT 
@@ -57,10 +76,7 @@ AND session_id NOT IN
     WHERE event_type = 'purchase' 
   )
 
-
-
-
---8.4 ถ้าแก้ cart abandonment ได้ 10% จะมี purchase เพิ่มกี่ order?**
+--8.4 If cart abandonment is reduced by 10%, how many additional orders could be generated?
 WITH cart_abandon as (
 SELECT
     DISTINCT session_id,
