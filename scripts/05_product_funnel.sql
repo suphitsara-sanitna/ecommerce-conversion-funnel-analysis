@@ -31,7 +31,6 @@ WHERE e.event_type = 'page_view'
 GROUP BY p.product_id,p.name
 ORDER BY view_session DESC
 
-
 --5.2 What are the top 10 most added-to-cart products?
 SELECT
    p.product_id,
@@ -42,8 +41,6 @@ LEFT JOIN products p on p.product_id = e.product_id
 WHERE e.event_type = 'add_to_cart'
 GROUP BY p.product_id,p.name
 ORDER BY cart_session DESC
-
-
 
 --5.3 What is the view-to-cart rate by product? Which products have the lowest rate?
 SELECT 
@@ -56,8 +53,6 @@ FROM events e
 LEFT JOIN products p on p.product_id = e.product_id 
 GROUP BY p.product_id 
 ORDER BY rate DESC
-
-
 
 --5.4 What is the cart-to-purchase rate by product? Which products are added to cart but rarely purchased?
 WITH cart_event as (
@@ -90,7 +85,6 @@ SELECT
 FROM purchase_event pe
 LEFT JOIN cart_event ce on ce.product_id = pe.productID
 ORDER BY cart_to_purchase_rate DESC
-
 
 -- 5.5 Which product category has the lowest overall view-to-purchase rate?
 WITH view_event as (
@@ -125,14 +119,3 @@ FROM purchase_event pe
 LEFT JOIN view_event ve on ve.product_id = pe.productID
 GROUP BY pe.category
 ORDER BY view_to_purchase_rate
-
-
-
-
-
-
-
-
-
-
-
