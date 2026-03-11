@@ -1,6 +1,23 @@
---07: CHECKOUT DROP-OFF ANALYSIS (วิเคราะห์การหยุดที่ Checkout)
+/*
+================================================================================
+Script 07: Checkout Drop-off Analysis
+================================================================================
+Purpose:
+    - To measure overall checkout abandonment rate
+    - To identify which devices and traffic sources have the most checkout drop-off
 
---7.1 Checkout abandonment rate โดยรวมเท่าไร? (session ที่มี checkout แต่ไม่มี purchase)**
+Tables Used:
+    - events
+    - sessions
+
+SQL Functions Used:
+    - Aggregate Functions: COUNT(), ROUND()
+    - Subqueries
+    - CASE WHEN
+================================================================================
+*/
+
+--7.1 What is the overall checkout abandonment rate?
 SELECT 
    COUNT(DISTINCT session_id) as cart_abandon,
    (SELECT COUNT(DISTINCT CASE WHEN event_type = 'checkout' THEN session_id END) FROM events) as cart_sessions,
@@ -13,8 +30,7 @@ AND session_id NOT IN (
     FROM events 
     WHERE event_type = 'purchase' )
 
-
---7.2 Session ที่ไปถึง checkout แต่ไม่ซื้อ มาจาก device ไหน?**
+--7.2 Which device has the most checkout abandonment sessions?
 SELECT 
    s.device as device,
    COUNT(DISTINCT e.session_id) as sessions
@@ -28,9 +44,7 @@ AND e.session_id NOT IN (
 GROUP BY device
 ORDER BY sessions DESC
 
-
-
---7.3 Session ที่ไปถึง checkout แต่ไม่ซื้อ มาจาก source ไหน?**
+--7.3 Which traffic source has the most checkout abandonment sessions?
 SELECT 
    s.source as source,
    COUNT(DISTINCT e.session_id) as sessions
@@ -43,8 +57,3 @@ AND e.session_id NOT IN (
     WHERE event_type = 'purchase' )
 GROUP BY source
 ORDER BY sessions DESC
-
-
-
-
-
