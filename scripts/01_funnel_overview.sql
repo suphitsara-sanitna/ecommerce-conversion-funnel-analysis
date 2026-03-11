@@ -19,7 +19,6 @@ SQL Functions Used:
 ================================================================================
 */
 
-
 --1.1 How many sessions are in each funnel stage?
 SELECT 
    event_type,
