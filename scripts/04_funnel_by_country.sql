@@ -1,6 +1,26 @@
---SCRIPT 04: FUNNEL BY COUNTRY (แยกตามประเทศ)
+--/*
+================================================================================
+Script 04: Funnel by Country
+================================================================================
+Purpose:
+    - To compare funnel performance across top 10 countries by session volume
+    - To identify countries with the highest checkout drop-off
+    - To find high-traffic countries with low overall conversion rates
 
---4.1. Top 10 ประเทศที่มี session มากสุด มี funnel conversion rate เป็นยังไงในแต่ละ step?**
+Tables Used:
+    - events
+    - sessions
+
+SQL Functions Used:
+    - Aggregate Functions: COUNT(), ROUND()
+    - Window Functions: LAG() OVER()
+    - CTEs
+    - Subqueries
+    - CASE WHEN
+================================================================================
+*/
+
+--4.1 How does the funnel conversion rate look at each step for the top 10 countries by session volume?
 WITH country_session as (
 SELECT 
     s.country,
@@ -30,7 +50,7 @@ FROM country_session
 
 
 
---4.2. ประเทศไหน drop-off ที่ checkout สูงสุด?** 
+--4.2 Which country has the highest checkout drop-off rate?
 SELECT 
    s.country,
    COUNT(DISTINCT s.session_id) as sessions,
@@ -46,7 +66,7 @@ GROUP BY s.country
 ORDER BY drop_off_rate DESC
 
 
---4.3. ประเทศไหนมี overall conversion rate ต่ำสุดทั้งที่มี session เยอะ?**
+--4.3 Which high-traffic countries have the lowest overall conversion rate?
 SELECT 
    s.country,
    COUNT(DISTINCT s.session_id) as sessions,
