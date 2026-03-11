@@ -29,8 +29,7 @@ SELECT
    ROUND(100.0*COUNT(DISTINCT session_id)/ (SELECT COUNT(DISTINCT session_id) FROM sessions),2) as session_share
 FROM sessions
 GROUP BY source
-
-
+    
 --3.2 What is the conversion rate and drop-off rate at each funnel step by traffic source?
 WITH event_session as (
 SELECT 
@@ -65,8 +64,7 @@ SELECT
  ROUND(100-(100.0* event_type_per_source/ 
  LAG(event_type_per_source) OVER( PARTITION BY source ORDER BY step_order)),2) as drop_off_rate
 FROM  source_session
-
-
+    
 -- 3.3 Does the overall conversion rate differ by source and which source has the best quality traffic?
 SELECT
    *,
@@ -84,8 +82,3 @@ FROM events e
 LEFT JOIN sessions s on s.session_id = e.session_id
 GROUP BY s.source
 ORDER BY conversion_rate DESC) conversion_rate
-
-
-
-
-
