@@ -29,9 +29,7 @@ SELECT
    ROUND(100.0*COUNT(DISTINCT session_id)/ (SELECT COUNT(DISTINCT session_id) FROM sessions),2) as session_share
 FROM sessions
 GROUP BY device
-   
-
-
+    
 --2.2 What is the conversion rate and drop-off rate at each funnel step by device?
 WITH event_session as (
 SELECT 
@@ -66,8 +64,7 @@ SELECT
  ROUND(100-(100.0* event_type_per_device/ 
  LAG(event_type_per_device) OVER( PARTITION BY device ORDER BY step_order)),2) as drop_off_rate
 FROM  device_session
-
-
+    
 --2.3 Does the overall conversion rate (Session → Purchase) differ by device?
 SELECT 
    s.device,
@@ -92,7 +89,3 @@ FROM events e
 LEFT JOIN sessions s on s.session_id = e.session_id
 WHERE event_type = 'purchase'
 GROUP BY s.device
-
-
-
-
