@@ -1,6 +1,26 @@
---01: FUNNEL OVERVIEW (ภาพรวม Funnel)
+/*
+================================================================================
+Script 01: Funnel Overview
+================================================================================
+Purpose:
+    - To measure the size of each funnel stage by session count
+    - To calculate conversion rates, drop-off rates, and overall funnel performance
+    - To analyze average time from first page view to purchase
 
---1.1 แต่ละ stage มี session กี่ session?**
+Tables Used:
+    - events
+
+SQL Functions Used:
+    - Aggregate Functions: COUNT(), MIN(), MAX(), AVG(), ROUND()
+    - Window Functions: LAG() OVER()
+    - CTEs
+    - Date Functions: JULIANDAY()
+    - Subqueries
+================================================================================
+*/
+
+
+--1.1 How many sessions are in each funnel stage?
 SELECT 
    event_type,
    COUNT(DISTINCT session_id) as total_sessions,
@@ -9,8 +29,8 @@ SELECT
 FROM events
 GROUP BY event_type
 
---1.2. Conversion rate ของแต่ละ step เท่าไร? (View→Cart, Cart→Checkout, Checkout→Purchase)**,
---1.4 Drop-off rate ของแต่ละ step เท่าไร? (กี่ % ที่หายไปในแต่ละ stage)**
+--1.2 What is the conversion rate and drop-off rate at each step?
+--(View→Cart, Cart→Checkout, Checkout→Purchase)
 SELECT 
    event_type,
    CASE event_type
@@ -33,7 +53,7 @@ ORDER BY step_order
 
 
 
---1.3 Overall conversion rate (Session → Purchase) เท่าไร?**
+--1.3 What is the overall conversion rate (Session → Purchase)?
 SELECT 
    COUNT(DISTINCT CASE WHEN event_type = 'purchase' THEN session_id END) as purchase_sessions,
    COUNT(DISTINCT session_id) as total_sessions,
@@ -42,7 +62,7 @@ SELECT
 FROM events
 
 
---1.5 Session ที่ซื้อสำเร็จใช้เวลาเฉลี่ยนานแค่ไหนจาก page_view ถึง purchase?**
+--1.4 How long does it take on average from first page view to purchase?
 WITH first_pageview as (
 SELECT
    session_id,
