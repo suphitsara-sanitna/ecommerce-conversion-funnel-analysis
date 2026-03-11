@@ -1,6 +1,28 @@
--- 06: CART ABANDONMENT ANALYSIS (วิเคราะห์การทิ้งตะกร้า)
+/*
+================================================================================
+Script 06: Cart Abandonment Analysis
+================================================================================
+Purpose:
+    - To measure overall cart abandonment rate
+    - To compare average cart size between abandoned and purchased sessions
+    - To identify which devices and traffic sources have the most cart abandonment
+    - To find the most frequently abandoned products
 
---6.1 Cart abandonment rate โดยรวมเท่าไร? (session ที่มี add_to_cart แต่ไม่มี purchase)**
+Tables Used:
+    - events
+    - sessions
+    - products
+
+SQL Functions Used:
+    - Aggregate Functions: COUNT(), SUM(), ROUND()
+    - CTEs
+    - Subqueries
+    - CASE WHEN
+    - UNION ALL
+================================================================================
+*/
+
+--6.1 What is the overall cart abandonment rate?
 SELECT 
    COUNT(DISTINCT session_id) as cart_abandon,
    (SELECT COUNT(DISTINCT CASE WHEN event_type = 'add_to_cart' THEN session_id END) FROM events) as cart_sessions,
@@ -12,10 +34,8 @@ AND session_id NOT IN (
     SELECT DISTINCT session_id 
     FROM events 
     WHERE event_type = 'purchase' )
-
-
-
---6.2 Session ที่ abandon cart มี cart_size เฉลี่ยเท่าไร เทียบกับ session ที่ซื้อสำเร็จ?**
+   
+--6.2 How does average cart size compare between abandoned and purchased sessions?
 WITH  sessions_abandon_cart_size as (
 SELECT 
    session_id,
@@ -57,10 +77,8 @@ SELECT
    COUNT(*) as total_sessions,
    ROUND(1.0 *SUM(total_product)/COUNT(*),2) as avg_cart_size
 FROM purchase_cart_size
-
-
---6.3 Session ที่ abandon cart มาจาก device ไหนมากสุด?**
-
+   
+--6.3 Which device has the most cart abandonment sessions?
 SELECT 
    s.device as device,
    COUNT(DISTINCT e.session_id) as sessions
@@ -73,9 +91,8 @@ AND e.session_id NOT IN (
     WHERE event_type = 'purchase' )
 GROUP BY device
 ORDER BY sessions DESC
-
-
---6.4 Session ที่ abandon cart มาจาก source ไหนมากสุด?**
+   
+--6.4 Which traffic source has the most cart abandonment sessions?
 SELECT 
    s.source as source,
    COUNT(DISTINCT e.session_id) as sessions
@@ -89,8 +106,7 @@ AND e.session_id NOT IN (
 GROUP BY source
 ORDER BY sessions DESC
 
-
---6.5 สินค้าไหนที่ถูก add_to_cart บ่อยที่สุดแต่ไม่ถูก purchase? (top abandoned products)**
+--6.5 Which products are most frequently added to cart but never purchased?
 SELECT 
    e.product_id,
    p.name,
