@@ -1,6 +1,27 @@
---02: FUNNEL BY DEVICE (แยกตาม Device)
+/*
+================================================================================
+Script 02: Funnel by Device
+================================================================================
+Purpose:
+    - To compare session distribution across device types
+    - To measure conversion and drop-off rates at each funnel step by device
+    - To identify which device has the highest drop-off and lowest overall conversion
+    - To compare Average Order Value (AOV) across devices
 
---2.1 แต่ละ device (mobile/desktop/tablet) มี session กี่ session และสัดส่วนเท่าไร?**
+Tables Used:
+    - events
+    - sessions
+
+SQL Functions Used:
+    - Aggregate Functions: COUNT(), SUM(), ROUND()
+    - Window Functions: LAG() OVER()
+    - CTEs
+    - Subqueries
+    - CASE WHEN
+================================================================================
+*/
+
+--2.1 How many sessions does each device have and what is the share?
 SELECT 
    device,
    COUNT(DISTINCT session_id) as sessions,
@@ -11,7 +32,7 @@ GROUP BY device
    
 
 
---2.2 Conversion rate ของแต่ละ step แยกตาม device เป็นยังไง?**, 2.4 Device ไหน drop-off rate สูงสุดในแต่ละ step?**
+--2.2 What is the conversion rate and drop-off rate at each funnel step by device?
 WITH event_session as (
 SELECT 
    session_id,
@@ -47,7 +68,7 @@ SELECT
 FROM  device_session
 
 
---2.3 Overall conversion rate (Session → Purchase) แยกตาม device ต่างกันไหม?**
+--2.3 Does the overall conversion rate (Session → Purchase) differ by device?
 SELECT 
    s.device,
    COUNT(DISTINCT e.session_id) as sessions,
@@ -61,7 +82,7 @@ LEFT JOIN sessions s on s.session_id = e.session_id
 GROUP BY s.device
 ORDER BY conversion_rate DESC
 
---2.5 Session ที่ซื้อสำเร็จแต่ละ device มี AOV ต่างกันไหม?**
+--2.4 What is the AOV for each device among sessions that completed a purchase?
 SELECT 
     s.device,
    COUNT(e.session_id) as total_orders,
