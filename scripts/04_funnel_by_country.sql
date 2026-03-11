@@ -48,8 +48,6 @@ SELECT
  ROUND(100.0* sessions/ LAG(sessions) OVER( PARTITION BY country ORDER BY step_order),2) as funnel_conversion_rate
 FROM country_session
 
-
-
 --4.2 Which country has the highest checkout drop-off rate?
 SELECT 
    s.country,
@@ -65,7 +63,6 @@ LEFT JOIN sessions s on s.session_id = e.session_id
 GROUP BY s.country
 ORDER BY drop_off_rate DESC
 
-
 --4.3 Which high-traffic countries have the lowest overall conversion rate?
 SELECT 
    s.country,
@@ -79,8 +76,3 @@ FROM events e
 LEFT JOIN sessions s on s.session_id = e.session_id
 GROUP BY s.country
 ORDER BY conversion_rate DESC
-
-
-
-
-
