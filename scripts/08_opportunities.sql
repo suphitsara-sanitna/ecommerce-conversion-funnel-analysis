@@ -58,14 +58,14 @@ LEFT JOIN sessions s on s.session_id = e.session_id
 GROUP BY s.device, s.source
 ORDER BY conversion_rate 
 
---8.3 ถ้าแก้ checkout drop-off ได้ 50% จะ recover revenue ได้เท่าไร? (revenue impact estimation)**
+--8.3 If checkout drop-off is reduced by 10%, how much revenue could be recovered?
 SELECT 
    COUNT(DISTINCT session_id) as checkout_drop_off_sessions,
    (SELECT SUM(total_usd) FROM orders) as total_revenue_from_order,
    (SELECT COUNT(order_id) FROM orders) as total_orders_sold,
    (SELECT (SUM(total_usd))/COUNT(order_id) FROM orders) as AOV,
-   ROUND(COUNT(DISTINCT session_id)/2*(SELECT (SUM(total_usd))/COUNT(order_id) FROM orders),2) as recover_revenue ,
-   ROUND(100.0*(COUNT(DISTINCT session_id)/2*(SELECT (SUM(total_usd))/COUNT(order_id) FROM orders))/
+   ROUND(COUNT(DISTINCT session_id)/10*(SELECT (SUM(total_usd))/COUNT(order_id) FROM orders),2) as recover_revenue ,
+   ROUND(100.0*(COUNT(DISTINCT session_id)/10*(SELECT (SUM(total_usd))/COUNT(order_id) FROM orders))/
    (SELECT SUM(total_usd) FROM orders),2) as recover_revenue_percent 
 FROM events
 WHERE event_type = 'checkout'
