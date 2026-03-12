@@ -68,7 +68,7 @@ FROM  source_session
 -- 3.3 Does the overall conversion rate differ by source and which source has the best quality traffic?
 SELECT
    *,
-  row_number() OVER(ORDER BY conversion_rate DESC)
+  row_number() OVER(ORDER BY conversion_rate DESC) as ranking
 FROM
 (SELECT 
    s.source,
