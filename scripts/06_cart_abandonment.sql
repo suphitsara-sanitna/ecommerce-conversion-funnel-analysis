@@ -121,3 +121,16 @@ WHERE e.event_type = 'add_to_cart' AND e.session_id NOT IN
     )
 GROUP BY e.product_id
 ORDER BY total_product DESC
+
+6.6 Does marketing opt-in status affect overall conversion rate?
+SELECT 
+   c.marketing_opt_in,
+   COUNT(DISTINCT s.session_id) as total_sessions,
+   COUNT(DISTINCT CASE WHEN e.event_type = 'purchase' THEN s.session_id END) as purchase_sessions,
+   ROUND(100.0 * COUNT(DISTINCT CASE WHEN e.event_type = 'purchase' THEN s.session_id END) /
+   COUNT(DISTINCT s.session_id), 2) as overall_conversion_rate
+FROM sessions s
+LEFT JOIN events e ON e.session_id = s.session_id
+LEFT JOIN customers c ON c.customer_id = s.customer_id
+GROUP BY c.marketing_opt_in
+ORDER BY overall_conversion_rate DESC
