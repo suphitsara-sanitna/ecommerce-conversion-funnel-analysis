@@ -50,6 +50,7 @@ If checkout drop-off is reduced by 10%, an estimated $151,589 in additional reve
 <img width="726" height="537" alt="Screenshot 2569-03-18 at 12 12 28" src="https://github.com/user-attachments/assets/aafdd531-873d-48c3-af6b-6333d3e4089c" />
 
 
+
 Because the biggest revenue opportunity comes from improving the checkout conversion rate, I recommend the following adjustments:
 
 1. Send reminder emails and texts to users who abandon cart or checkout, targeting those who have opted in to marketing communications
