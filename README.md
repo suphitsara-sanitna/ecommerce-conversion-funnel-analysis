@@ -20,7 +20,8 @@ This project uses the same dataset as the [E-Commerce EDA Project](https://githu
 
 Revenue for this e-commerce business is entirely dependent on completed purchases. The overall conversion rate from session to purchase sits at only 27.98%, meaning more than 70% of users who visit the site never complete a purchase. The key question is: where are users dropping out of the funnel, and what changes can be made to encourage them to complete their purchase?
 
----
+---<img width="1253" height="699" alt="Screenshot 2569-03-18 at 12 07 29" src="https://github.com/user-attachments/assets/8ab9ed88-258d-479d-9c57-6c4dc9316ccf" />
+
 
 ## Methodology
 
