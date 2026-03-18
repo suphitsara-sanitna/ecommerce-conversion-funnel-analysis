@@ -47,6 +47,9 @@ After segmenting the funnel by device, traffic source, and country, the conversi
 
 If checkout drop-off is reduced by 10%, an estimated $151,589 in additional revenue could be recovered. If cart abandonment is reduced by 10%, an estimated $641,441 in additional revenue could be recovered. While cart abandonment shows a higher recovery potential, this figure assumes all recovered sessions would convert at the same AOV, which may overestimate the actual impact. Checkout drop-off is the more reliable opportunity as these users have already demonstrated strong purchase intent by reaching the final step.
 
+<img width="726" height="537" alt="Screenshot 2569-03-18 at 12 12 28" src="https://github.com/user-attachments/assets/aafdd531-873d-48c3-af6b-6333d3e4089c" />
+
+
 Because the biggest revenue opportunity comes from improving the checkout conversion rate, I recommend the following adjustments:
 
 1. Send reminder emails and texts to users who abandon cart or checkout, targeting those who have opted in to marketing communications
