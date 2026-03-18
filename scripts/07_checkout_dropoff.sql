@@ -42,7 +42,7 @@ AND e.session_id NOT IN (
     FROM events 
     WHERE event_type = 'purchase' )
 GROUP BY device
-ORDER BY sessions DESC
+ORDER BY check_out_abandon_sessions DESC
 
 --7.3 Which traffic source has the most checkout abandonment sessions?
 SELECT 
@@ -56,4 +56,4 @@ AND e.session_id NOT IN (
     FROM events 
     WHERE event_type = 'purchase' )
 GROUP BY source
-ORDER BY sessions DESC
+ORDER BY check_out_abandon_sessions DESC
